@@ -45,13 +45,13 @@ jobs:
           echo "NETLIFY_SITE_ID=${{ env.NETLIFY_SITE_ID }}"
           echo "NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }}"
 
-      # - name: Deploy to Netlify
-      #   env:
-      #     NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      #     NETLIFY_SITE_ID: ${{ env.NETLIFY_SITE_ID }}
-      #   run: |
-      #     netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID --dir build --prod || exit 1
+      - name: Deploy to Netlify
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ env.NETLIFY_SITE_ID }}
+        run: |
+          netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID --dir 
 
-      # - name: Notify Deployment URL
-      #   run: |
-      #     echo "Deployment complete. Your site is available at: $ENV_URL"
+      - name: Notify Deployment URL
+        run: |
+          echo "Deployment complete. Your site is available at: $ENV_URL"
