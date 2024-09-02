@@ -3,41 +3,25 @@ name: Deploy to Netlify
 on:
   push:
     branches:
-      - main       
-      - develop     
-      - staging     
+      - main 
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # Use the version of Node.js your project requires
+          node-version: '16' 
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build
-        run: npm run build   # Adjust this command if your build command is different
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
 
       - name: Deploy to Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         run: |
-          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-            SITE_ID=${{ secrets.NETLIFY_PRODUCTION_SITE_ID }}
-          elif [ "${{ github.ref }}" == "refs/heads/develop" ]; then
-            SITE_ID=${{ secrets.NETLIFY_DEVELOPMENT_SITE_ID }}
-          elif [ "${{ github.ref }}" == "refs/heads/staging" ]; then
-            SITE_ID=${{ secrets.NETLIFY_STAGING_SITE_ID }}
-          else
-            echo "No matching environment found."
-            exit 1
-          fi
-          npx netlify deploy --site $SITE_ID --auth $NETLIFY_AUTH_TOKEN --dir=build --prod
+          netlify deploy --prod --dir=. --site=$NETLIFY_SITE_ID
