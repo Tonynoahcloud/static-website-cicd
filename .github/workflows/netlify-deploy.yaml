@@ -3,22 +3,22 @@ name: Deploy to Netlify
 on:
   push:
     branches:
-      - main 
+      - staging 
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Deploy to Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_STAGING_SITEID: ${{ secrets.NETLIFY_STAGING_SITEID }}
         run: |
           curl -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
                -F "file=@./" \
-               -F "site_id=$NETLIFY_DEVELOPMENT_SITE_ID" \
+               -F "site_id=$NETLIFY_STAGING_SITEID" \
                -F "path=/" \
-               https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID/deploys
+               https://api.netlify.com/api/v1/sites/$NETLIFY_STAGING_SITEID/deploys
