@@ -13,15 +13,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+        
       - name: Install Netlify CLI
         run: npm install -g netlify-cli
 
-      - name: Build project
-        run: |
-          # Replace with your actual build command
-          npm install && npm run build
-          
       - name: Display GitHub Ref
         run: echo "GITHUB_REF=$GITHUB_REF"
 
