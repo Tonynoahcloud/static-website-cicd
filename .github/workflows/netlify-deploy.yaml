@@ -10,8 +10,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: ${{ env.ENVIRONMENT }}  # Specify the environment for deployment
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -28,7 +26,7 @@ jobs:
         run: |
           # Replace with your actual build command
           npm install && npm run build
-
+          
       - name: Display GitHub Ref
         run: echo "GITHUB_REF=$GITHUB_REF"
 
@@ -60,6 +58,8 @@ jobs:
       - name: Deploy to Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ env.NETLIFY_SITE_ID }}
+          ENV_URL: ${{ env.ENV_URL }}
         run: |
           # Deploy to Netlify using Netlify CLI
           netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID --dir build --prod # Adjust --dir if necessary
