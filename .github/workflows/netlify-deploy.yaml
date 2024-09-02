@@ -13,17 +13,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install Netlify CLI
-        run: npm install -g netlify-cli@6.7.0  # Specify a stable version, e.g., 6.7.0
+      - name: Create ZIP of static files
+        run: zip -r site.zip .  # Adjust this command based on where your files are
 
       - name: Deploy to Netlify
-        id: deploy
         run: |
-          DEPLOY_URL=$(netlify deploy --dir=. --prod --site=$NETLIFY_SITE_ID --json | jq -r .deploy_url)
-          echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
+          response=$(curl -X POST "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID/deploys" \
+                            -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
+                            -F "file=.")
+          echo "Deployment response: $response"
+          echo "$response" | jq -r '.deploy_url' > deploy_url.txt
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
       - name: Output deployment URL
-        run: echo "Your website is live at ${{ env.DEPLOY_URL }}"
+        run: |
+          echo "Your website is live at $(cat deploy_url.txt)"
