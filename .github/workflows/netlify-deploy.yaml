@@ -3,30 +3,34 @@ name: Deploy to Netlify
 on:
   push:
     branches:
-      - main  # or the branch you want to deploy from
+      - main  # Change this if your default branch is not 'main'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Create ZIP of static files
-        run: zip -r site.zip .  # Adjust this command based on where your files are
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Use the Node.js version your project requires
+      
+      - name: Install dependencies
+        run: npm install
+        # If you're using another package manager, change this step accordingly
+      
+      - name: Build project
+        run: npm run build
+        # Replace this command with the build command if different
 
       - name: Deploy to Netlify
-        run: |
-          response=$(curl -X POST "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID/deploys" \
-                            -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
-                            -F "file=.")
-          echo "Deployment response: $response"
-          echo "$response" | jq -r '.deploy_url' > deploy_url.txt
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-
-      - name: Output deployment URL
+          NETLIFY_DEVELOPMENT_SITE_ID: ${{ secrets.NETLIFY_DEVELOPMENT_SITE_ID }}
         run: |
-          echo "Your website is live at $(cat deploy_url.txt)"
+          npm install -g netlify-cli
+          netlify deploy --prod --dir=. --site=$NETLIFY_DEVELOPMENT_SITE_ID
+          # Replace 'public' with the directory where your static files are generated
