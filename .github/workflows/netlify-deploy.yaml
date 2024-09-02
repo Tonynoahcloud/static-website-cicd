@@ -3,7 +3,8 @@ name: Deploy to Netlify
 on:
   push:
     branches:
-      - main 
+      - main
+      - staging # Add your staging branch or any other branch you want to trigger staging deployment
 
 jobs:
   deploy:
@@ -12,13 +13,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
       - name: Deploy to Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_STAGING_SITE_ID: ${{ secrets.NETLIFY_STAGING_SITEID }}
         run: |
-          curl -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
-               -F "file=@./" \
-               -F "site_id=$NETLIFY_DEVELOPMENT_SITE_ID" \
-               -F "path=/" \
-               https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID/deploys
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "Deploying to production"
+            netlify deploy --prod --dir=. --site=$NETLIFY_SITE_ID --auth=$NETLIFY_AUTH_TOKEN
+          elif [ "${{ github.ref }}" == "refs/heads/staging" ]; then
+            echo "Deploying to staging"
+            netlify deploy --dir=. --site=$NETLIFY_STAGING_SITEID --auth=$NETLIFY_AUTH_TOKEN
+          else
+            echo "No deployment action taken for this branch"
+          fi
