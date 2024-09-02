@@ -30,14 +30,11 @@ jobs:
             NETLIFY_SITE_ID=$NETLIFY_DEVELOPMENT_SITE_ID
           elif [[ $GITHUB_REF == 'refs/heads/staging' ]]; then
             NETLIFY_SITE_ID=$NETLIFY_STAGING_SITE_ID
-          else
-            echo "No site ID configured for this branch."
-            exit 1
           fi
 
           # Deploy to Netlify
           curl -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
-               -F "file=@./dist" \ # Update to your actual build output directory
-               -F "site_id=$NETLIFY_DEVELOPMENT_SITE_ID" \
+               -F "file=*" \ # Update to your actual build output directory
+               -F "site_id=$NETLIFY_SITE_ID" \
                -F "path=/" \
-               https://api.netlify.com/api/v1/sites/$NETLIFY_DEVELOPMENT_SITE_ID/deploys
+               https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID/deploys
