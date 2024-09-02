@@ -42,6 +42,6 @@ jobs:
           fi
 
           # Deploy to Netlify using Netlify CLI
-          netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --dir . --main
+          netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --dir . --prod
           netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --dir . --staging
 
