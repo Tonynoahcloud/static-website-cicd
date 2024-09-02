@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - staging
+      - development
 
 jobs:
   deploy:
@@ -23,31 +24,46 @@ jobs:
 
       - name: Build project
         run: |
-          # Run your build command here
-          # e.g., npm install && npm run build
-          echo "Build your project here"
-
+          # Replace with your actual build command
+          npm install && npm run build
+          
       - name: Display GitHub Ref
         run: echo "GITHUB_REF=$GITHUB_REF"
 
-      - name: Set Netlify Site ID
-        id: set_site_id
+      - name: Set Netlify Site ID and URL
+        id: set_site_id_and_url
         run: |
           if [[ $GITHUB_REF == 'refs/heads/main' ]]; then
-            echo "NETLIFY_SITE_ID=${{ secrets.NETLIFY_DEVELOPMENT_SITE_ID }}" >> $GITHUB_ENV
+            echo "NETLIFY_SITE_ID=${{ secrets.NETLIFY_PRODUCTION_SITE_ID }}" >> $GITHUB_ENV
+            echo "ENVIRONMENT=production" >> $GITHUB_ENV
+            echo "ENV_URL=${{ secrets.NETLIFY_PRODUCTION_URL }}" >> $GITHUB_ENV
           elif [[ $GITHUB_REF == 'refs/heads/staging' ]]; then
             echo "NETLIFY_SITE_ID=${{ secrets.NETLIFY_STAGING_SITE_ID }}" >> $GITHUB_ENV
+            echo "ENVIRONMENT=staging" >> $GITHUB_ENV
+            echo "ENV_URL=${{ secrets.NETLIFY_STAGING_URL }}" >> $GITHUB_ENV
+          elif [[ $GITHUB_REF == 'refs/heads/development' ]]; then
+            echo "NETLIFY_SITE_ID=${{ secrets.NETLIFY_DEVELOPMENT_SITE_ID }}" >> $GITHUB_ENV
+            echo "ENVIRONMENT=development" >> $GITHUB_ENV
+            echo "ENV_URL=${{ secrets.NETLIFY_DEVELOPMENT_URL }}" >> $GITHUB_ENV
           else
             echo "Branch not recognized. Exiting."
             exit 1
           fi
 
-      - name: Verify Site ID
-        run: echo "Deploying to Netlify site ID:" $NETLIFY_SITE_ID
+      - name: Verify Site ID and URL
+        run: |
+          echo "Deploying to Netlify site ID:" $NETLIFY_SITE_ID
+          echo "Environment URL:" $ENV_URL
 
       - name: Deploy to Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        runs-on: ubuntu-latest
+        environment: ${{ env.ENVIRONMENT }}
         run: |
           # Deploy to Netlify using Netlify CLI
-          netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID --dir . --prod # Adjust --dir if necessary
+          netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID --dir build --prod # Adjust --dir if necessary
+
+      - name: Notify Deployment URL
+        run: |
+          echo "Deployment complete. Your site is available at: $ENV_URL"
