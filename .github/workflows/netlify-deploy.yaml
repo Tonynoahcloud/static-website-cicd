@@ -13,6 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16' # Adjust this to the Node.js version you're using
+
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
       - name: Build project
         run: |
           # Run your build command here
@@ -22,8 +30,6 @@ jobs:
       - name: Deploy to Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_DEVELOPMENT_SITE_ID: ${{ secrets.NETLIFY_DEVELOPMENT_SITE_ID }}
-          NETLIFY_STAGING_SITE_ID: ${{ secrets.NETLIFY_STAGING_SITE_ID }}
         run: |
           # Set the Netlify site ID based on the branch
           if [[ $GITHUB_REF == 'refs/heads/main' ]]; then
@@ -35,12 +41,7 @@ jobs:
             exit 1
           fi
 
-          # Verify the Netlify site ID
-          echo "Deploying to Netlify site ID: $NETLIFY_SITE_ID"
+          # Deploy to Netlify using Netlify CLI
+          netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --dir . --main
+          netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_AUTH_TOKEN --dir . --staging
 
-          # Deploy to Netlify using curl
-          curl -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
-               -F "file=./app" \  # Update to the actual directory or file if not in the root
-               -F "site_id=$NETLIFY_SITE_ID" \
-               -F "path=/" \
-               https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID/deploys
