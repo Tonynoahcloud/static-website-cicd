@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Install Netlify CLI
         run: npm install -g netlify-cli
 
@@ -45,13 +45,22 @@ jobs:
           echo "NETLIFY_SITE_ID=${{ env.NETLIFY_SITE_ID }}"
           echo "NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_AUTH_TOKEN }}"
 
+      - name: List Files in Root Directory
+        run: ls -la
+
+      - name: Build Project
+        run: npm run build  # Adjust this if you use a different build command
+
+      - name: List Files After Build
+        run: ls -la  # List files again to ensure the build output is present
+
       - name: Deploy to Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ env.NETLIFY_SITE_ID }}
         run: |
+          echo "Deploying to Netlify site ID: $NETLIFY_SITE_ID"
           netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID --dir . --prod || exit 1
-
 
       - name: Notify Deployment URL
         run: |
