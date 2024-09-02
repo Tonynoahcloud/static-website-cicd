@@ -34,7 +34,7 @@ jobs:
 
           # Deploy to Netlify
           curl -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
-               -F "file=*" \ # Update to your actual build output directory
+               -F "file=@./" \ # Update to your actual build output directory
                -F "site_id=$NETLIFY_SITE_ID" \
                -F "path=/" \
                https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID/deploys
