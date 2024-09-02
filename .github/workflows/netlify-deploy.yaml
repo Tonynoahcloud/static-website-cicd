@@ -22,6 +22,8 @@ jobs:
       - name: Deploy to Netlify
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_DEVELOPMENT_SITE_ID: ${{ secrets.NETLIFY_DEVELOPMENT_SITE_ID }}
+          NETLIFY_STAGING_SITE_ID: ${{ secrets.NETLIFY_STAGING_SITE_ID }}
         run: |
           # Set the Netlify site ID based on the branch
           if [[ $GITHUB_REF == 'refs/heads/main' ]]; then
