@@ -36,3 +36,8 @@ jobs:
           else
             echo "No deployment action taken for this branch"
           fi
+          curl -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
+               -F "file=@./dist" \ # Update to your actual build output directory
+               -F "site_id=$NETLIFY_STAGING_SITEID" \
+               -F "path=/" \
+               https://api.netlify.com/api/v1/sites/$NETLIFY_STAGING_SITEID/deploys
