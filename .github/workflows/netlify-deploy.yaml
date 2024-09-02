@@ -27,18 +27,18 @@ jobs:
             echo "NETLIFY_SITE_ID=${{ secrets.NETLIFY_PRODUCTION_SITE_ID }}" >> $GITHUB_ENV
             echo "ENVIRONMENT=production" >> $GITHUB_ENV
             echo "ENV_URL=${{ secrets.NETLIFY_PRODUCTION_URL }}" >> $GITHUB_ENV
-      #     elif [[ $GITHUB_REF == 'refs/heads/staging' ]]; then
-      #       echo "NETLIFY_SITE_ID=${{ secrets.NETLIFY_STAGING_SITE_ID }}" >> $GITHUB_ENV
-      #       echo "ENVIRONMENT=staging" >> $GITHUB_ENV
-      #       echo "ENV_URL=${{ secrets.NETLIFY_STAGING_URL }}" >> $GITHUB_ENV
-      #     elif [[ $GITHUB_REF == 'refs/heads/development' ]]; then
-      #       echo "NETLIFY_SITE_ID=${{ secrets.NETLIFY_DEVELOPMENT_SITE_ID }}" >> $GITHUB_ENV
-      #       echo "ENVIRONMENT=development" >> $GITHUB_ENV
-      #       echo "ENV_URL=${{ secrets.NETLIFY_DEVELOPMENT_URL }}" >> $GITHUB_ENV
-      #     else
-      #       echo "Branch not recognized. Exiting."
-      #       exit 1
-      #     fi
+          elif [[ $GITHUB_REF == 'refs/heads/staging' ]]; then
+            echo "NETLIFY_SITE_ID=${{ secrets.NETLIFY_STAGING_SITE_ID }}" >> $GITHUB_ENV
+            echo "ENVIRONMENT=staging" >> $GITHUB_ENV
+            echo "ENV_URL=${{ secrets.NETLIFY_STAGING_URL }}" >> $GITHUB_ENV
+          elif [[ $GITHUB_REF == 'refs/heads/development' ]]; then
+            echo "NETLIFY_SITE_ID=${{ secrets.NETLIFY_DEVELOPMENT_SITE_ID }}" >> $GITHUB_ENV
+            echo "ENVIRONMENT=development" >> $GITHUB_ENV
+            echo "ENV_URL=${{ secrets.NETLIFY_DEVELOPMENT_URL }}" >> $GITHUB_ENV
+          else
+            echo "Branch not recognized. Exiting."
+            exit 1
+          fi
 
       # - name: Debug Environment Variables
       #   run: |
