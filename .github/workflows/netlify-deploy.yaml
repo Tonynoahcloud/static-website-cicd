@@ -52,7 +52,7 @@ jobs:
           ENV_URL: ${{ env.ENV_URL }}
         run: |
           # Deploy to Netlify using Netlify CLI
-          netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID --dir build --prod # Adjust --dir if necessary
+          netlify deploy --auth $NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID --dir build --prod || exit 1
 
       - name: Notify Deployment URL
         run: |
