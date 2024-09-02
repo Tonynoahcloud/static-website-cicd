@@ -48,9 +48,6 @@ jobs:
       - name: List Files in Root Directory
         run: ls -la
 
-      - name: Build Project
-        run: npm run build  # Adjust this if you use a different build command
-
       - name: List Files After Build
         run: ls -la  # List files again to ensure the build output is present
 
