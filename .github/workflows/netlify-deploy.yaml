@@ -40,7 +40,7 @@ jobs:
 
           # Deploy to Netlify using curl
           curl -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
-               -F "file=@./" \  # Update to the actual directory or file if not in the root
+               -F "file=./app" \  # Update to the actual directory or file if not in the root
                -F "site_id=$NETLIFY_SITE_ID" \
                -F "path=/" \
                https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID/deploys
