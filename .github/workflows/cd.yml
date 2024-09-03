@@ -17,8 +17,8 @@ jobs:
       name: development
     env:
        # we expect this job to run in the dev environment
-      url:              # this url is gotten from netlify and it is specifically for the dev environment
-      NETLIFY_DEV_SITE_ID:        # this is the site id for the dev url
+      url:   https://muna-dev.netlify.app           # this url is gotten from netlify and it is specifically for the dev environment
+      NNETLIFY_DEVELOP_SITE_ID:   $ {{ secrets.NETLIFY_DEVELOP_SITE_ID }}     # this is the site id for the dev url
 
     if:  github.event.ref == 'refs/heads/dev' # we want this job to be triggered once we push to the dev branch
     
@@ -33,7 +33,7 @@ jobs:
     environment:
       name: staging
     env:
-      url: echo 'https://staging-env.netlify.app'
+      url:  https://staging-env.netlify.app
       NETLIFY_STAGING_SITE_ID: $ {{ secrets.NETLIFY_STAGING_SITE_ID }}
       
     if:  github.event.ref == 'refs/heads/staging'       #we are assuming we have a staging branch, so this job would be triggered is we push code to the staging branch
@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: production
-      url:  'https://prod-setup.netlify.app'
+      url:  https://prod-setup.netlify.app
     env:
       NETLIFY_PROD_SITE_ID: $ {{ secrets.NETLIFY_PROD_SITE_ID }}
     if: github.event.ref == 'refs/heads/main'       # production deployment would be triggered when we push to the main branch
