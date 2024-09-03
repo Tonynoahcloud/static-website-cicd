@@ -10,12 +10,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      name: prod
     steps:
       - uses: actions/checkout@v4
   deploy-dev:
     runs-on: ubuntu-latest
     env:
-      name: development
+      name: prod
     if:  github.event.ref == 'refs/heads/main'
     needs: [build]
     steps:
