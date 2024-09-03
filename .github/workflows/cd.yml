@@ -19,7 +19,7 @@ jobs:
     - name: Deploy to Dev
       uses: nwtgck/actions-netlify@v3.0
       with:
-        args: deploy --development --dir=. --alias="dev-example-url.netlify.app"
+        args: deploy --development --dir=. --alias=dev-example-url.netlify.app
       env:
         DEV_ENV: ${{ secrets.DEV_ENV }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
@@ -38,7 +38,7 @@ jobs:
     - name: Deploy to Staging
       uses: nwtgck/actions-netlify@v3.0
       with:
-        args: deploy --staging --dir=. --alias="https://prod-setup.netlify.app"
+        args: deploy --staging --dir=. --alias=https://prod-setup.netlify.app
       env:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_STAGING_SITE_ID }}
@@ -55,7 +55,7 @@ jobs:
     - name: Deploy to Production
       uses: nwtgck/actions-netlify@v3.0
       with:
-        args: deploy --prod --dir=. --alias="https://prod-setup.netlify.app"
+        args: deploy --prod --dir=. --alias=https://prod-setup.netlify.app
       env:
         PROD_ENV: ${{ secrets.PROD_ENV}}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
