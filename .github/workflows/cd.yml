@@ -13,8 +13,10 @@ jobs:
       - uses: actions/checkout@v4 # the workflow needs to checkout the current repository
   deploy-dev:
     runs-on: ubuntu-latest
+    environment:
+      name: development
     env:
-      name: development # we expect this job to run in the dev environment
+       # we expect this job to run in the dev environment
       url:              # this url is gotten from netlify and it is specifically for the dev environment
       NETLIFY_DEV_SITE_ID:        # this is the site id for the dev url
 
@@ -28,8 +30,10 @@ jobs:
       
   deploy-staging:
     runs-on: ubuntu-latest
-    env:
+    environment:
       name: staging
+    env:
+      
       STAGING_ENV: $ {{ secrets.STAGING_ENV }}
       url: echo 'https://staging-env.netlify.app'
       NETLIFY_STAGING_SITE_ID: $ {{ secrets.NETLIFY_STAGING_SITE_ID }}
@@ -47,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: production
-      url: echo 'https://prod-setup.netlify.app'
+      url:  'https://prod-setup.netlify.app'
     env:
       NETLIFY_PROD_SITE_ID: $ {{ secrets.NETLIFY_PROD_SITE_ID }}
     if: github.event.ref == 'refs/heads/main'       # production deployment would be triggered when we push to the main branch
