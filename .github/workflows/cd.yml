@@ -10,6 +10,8 @@ on:
 jobs:
   deploy-staging:
     runs-on: ubuntu-latest
+    env:
+      staging: ${{ secrets.staging }}
     if: ${{ github.ref == 'refs/heads/main' }}
 
     steps:
@@ -21,7 +23,6 @@ jobs:
       with:
         args: deploy --staging --dir=. --alias="https://prod-setup.netlify.app"
       env:
-        staging: ${{ env.staging }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_STAGING_SITE_ID }}
 
