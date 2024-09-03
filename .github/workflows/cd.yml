@@ -21,7 +21,7 @@ jobs:
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
       NETLIFY_SITE_ID: ${{ secrets.NETLIFY_DEV_SITE_ID }}
 
-    if:  github.event.ref == 'refs/heads/main'
+    if:  github.event.ref == 'pull_request'
     needs: [build]
     steps:
     - name: Checkout code
@@ -68,5 +68,5 @@ jobs:
         args: deploy --prod --dir=.
       env:
         name: prod
-        url: 'https://prod-setup.netlify.app'
+        url: https://prod-setup.netlify.app
   
