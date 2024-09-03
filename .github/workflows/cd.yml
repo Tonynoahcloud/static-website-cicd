@@ -20,8 +20,8 @@ jobs:
       uses: nwtgck/actions-netlify@v3.0
       with:
         args: deploy --development --dir=. 
-        echo: "dev-example-url.netlify.app"
       env:
+        url: 'dev-example-url.netlify.app'
         DEV_ENV: ${{ secrets.DEV_ENV }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_DEV_SITE_ID }}
