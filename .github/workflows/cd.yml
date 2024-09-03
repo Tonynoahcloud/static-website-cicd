@@ -21,7 +21,7 @@ jobs:
       NETLIFY_DEV_SITE_ID:        # this is the site id for the dev url
 
     if:  github.event.ref == 'refs/heads/dev' # we want this job to be triggered once we push to the dev branch
-    needs: [build]            # this job would only run if the build job is successful
+    
     steps:
     - name: Deploy to Dev     
       uses: nwtgck/actions-netlify@v3.0
@@ -36,7 +36,7 @@ jobs:
       NETLIFY_STAGING_SITE_ID:
       
     if:  github.event.ref == 'refs/heads/staging'       #we are assuming we have a staging branch, so this job would be triggered is we push code to the staging branch
-    needs: [deploy-dev]                                 #the development must run for the staging to run
+                                  
 
     steps:
     - name: Deploy to Staging
