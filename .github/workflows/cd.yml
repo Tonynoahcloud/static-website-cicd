@@ -10,6 +10,13 @@ on:
 jobs:
   deploy-dev:
     runs-on: ubuntu-latest
+    env:
+      name: development
+      url: 'dev-example-url.netlify.app'
+      DEV_ENV: ${{ secrets.DEV_ENV }}
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_DEV_SITE_ID }}
+
     if:  github.event.ref == 'refs/heads/main'
 
     steps:
@@ -20,13 +27,7 @@ jobs:
       uses: nwtgck/actions-netlify@v3.0
       with:
         args: deploy --development --dir=. 
-      env:
-        name: development
-        url: 'dev-example-url.netlify.app'
-        DEV_ENV: ${{ secrets.DEV_ENV }}
-        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_DEV_SITE_ID }}
-
+      
   deploy-staging:
     runs-on: ubuntu-latest
     env:
