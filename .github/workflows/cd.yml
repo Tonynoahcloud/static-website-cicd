@@ -5,7 +5,7 @@ on:
     branches:
       - main # this line shows that the pipeline would only be triggered if we push to the main branch
       - staging
-      - production
+      - develop
 jobs:
   build:
     runs-on: ubuntu-latest # our job would be running on ubuntu os
