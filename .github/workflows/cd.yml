@@ -31,9 +31,9 @@ jobs:
   deploy-staging:
     runs-on: ubuntu-latest
     env:
-      name: staging
+      name: STAGING_ENV
       STAGING_ENV: $ {{ secrets.STAGING_ENV }}
-      url: 'https://staging-env.netlify.app'
+      url: echo 'https://staging-env.netlify.app'
       NETLIFY_STAGING_SITE_ID: $ {{ secrets.NETLIFY_STAGING_SITE_ID }}
       
     if:  github.event.ref == 'refs/heads/staging'       #we are assuming we have a staging branch, so this job would be triggered is we push code to the staging branch
