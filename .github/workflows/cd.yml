@@ -36,14 +36,14 @@ jobs:
     - name: Deploy to Production
       uses: nwtgck/actions-netlify@v3.0
       with:
-        args: deploy --prod --dir=. --alias="https://prod-setup.netlify.app"
+        args: deploy --production --dir=. --alias="https://prod-setup.netlify.app"
       env:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
   deploy-dev:
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/dev' }}
+    if: ${{ github.ref == 'refs/heads/develop' }}
 
     steps:
     - name: Checkout code
@@ -52,7 +52,7 @@ jobs:
     - name: Deploy to Dev
       uses: nwtgck/actions-netlify@v3.0
       with:
-        args: deploy --dev --dir=. --alias="dev-example-url.netlify.app"
+        args: deploy --develop --dir=. --alias="dev-example-url.netlify.app"
       env:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_DEV_SITE_ID }}
