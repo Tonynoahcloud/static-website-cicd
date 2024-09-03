@@ -21,7 +21,7 @@ jobs:
       with:
         args: deploy --staging --dir=. --alias="https://prod-setup.netlify.app"
       env:
-        staging: ${{ secrets.staging }}
+        staging: ${{ env.staging }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_STAGING_SITE_ID }}
 
@@ -39,7 +39,7 @@ jobs:
       with:
         args: deploy --prod --dir=. --alias="https://prod-setup.netlify.app"
       env:
-        prod: ${{ secrets.prod }}
+        prod: ${{ env.prod }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
@@ -56,6 +56,6 @@ jobs:
       with:
         args: deploy --development --dir=. --alias="dev-example-url.netlify.app"
       env:
-        development: ${{ secrets.development }}
+        development: ${{ env.development }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_DEV_SITE_ID }}
