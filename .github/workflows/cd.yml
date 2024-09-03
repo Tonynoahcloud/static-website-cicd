@@ -10,7 +10,7 @@ on:
 jobs:
   deploy-staging:
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/staging' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
 
     steps:
     - name: Checkout code
@@ -36,14 +36,14 @@ jobs:
     - name: Deploy to Production
       uses: nwtgck/actions-netlify@v3.0
       with:
-        args: deploy --production --dir=. --alias="https://prod-setup.netlify.app"
+        args: deploy --prod --dir=. --alias="https://prod-setup.netlify.app"
       env:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
   deploy-dev:
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/develop' }}
+    if: ${{ github.ref == 'refs/heads/main' }}
 
     steps:
     - name: Checkout code
