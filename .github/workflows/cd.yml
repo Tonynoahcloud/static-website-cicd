@@ -20,7 +20,7 @@ jobs:
       url:   https://muna-dev.netlify.app           # this url is gotten from netlify and it is specifically for the dev environment
       NNETLIFY_DEVELOP_SITE_ID:   $ {{ secrets.NETLIFY_DEVELOP_SITE_ID }}     # this is the site id for the dev url
 
-    if:  github.event.ref == 'refs/heads/dev' # we want this job to be triggered once we push to the dev branch
+    if:  github.event.ref == 'refs/heads/develop' # we want this job to be triggered once we push to the dev branch
     
     steps:
     - name: Deploy to Dev     
