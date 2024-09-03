@@ -48,7 +48,8 @@ jobs:
     environment:
       name: production
       url: echo 'https://prod-setup.netlify.app'
-      # NETLIFY_PROD_SITE_ID: $ {{ secrets.NETLIFY_PROD_SITE_ID }}
+    env:
+      NETLIFY_PROD_SITE_ID: $ {{ secrets.NETLIFY_PROD_SITE_ID }}
     if: github.event.ref == 'refs/heads/main'       # production deployment would be triggered when we push to the main branch
     steps:
     - name: Deploy to Production
