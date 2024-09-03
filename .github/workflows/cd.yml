@@ -8,6 +8,10 @@ on:
       - develop  
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
   deploy-dev:
     runs-on: ubuntu-latest
     env:
@@ -18,7 +22,7 @@ jobs:
       NETLIFY_SITE_ID: ${{ secrets.NETLIFY_DEV_SITE_ID }}
 
     if:  github.event.ref == 'refs/heads/main'
-
+    needs: [build]
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
