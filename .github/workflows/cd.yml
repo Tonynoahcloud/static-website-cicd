@@ -35,7 +35,7 @@ jobs:
   deploy-staging:
     runs-on: ubuntu-latest
     env:
-      Name: staging
+      name: staging
       STAGING_ENV: ${{ secrets.STAGING_ENV}}
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
       NETLIFY_SITE_ID: ${{ secrets.NETLIFY_STAGING_SITE_ID }}
@@ -65,10 +65,8 @@ jobs:
     - name: Deploy to Production
       uses: nwtgck/actions-netlify@v3.0
       with:
-        args: deploy --prod --dir=. --alias=https://prod-setup.netlify.app
+        args: deploy --prod --dir=.
       env:
-        PROD_ENV: ${{ secrets.PROD_ENV}}
-        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-
+        name: prod
+        url: 'https://prod-setup.netlify.app'
   
