@@ -3,20 +3,56 @@ name: Deploy to Netlify
 on:
   push:
     branches:
-      - main  
+      - main
+      - staging
+      - dev  
 
 jobs:
-  deploy:
+  deploy-staging:
     runs-on: ubuntu-latest
+    if: github.ref_name == 'staging'
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Deploy to Netlify
+    - name: Deploy to Staging
       uses: nwtgck/actions-netlify@v3.0
       with:
-        args: deploy --prod --dir=.
+        args: deploy --staging --dir=. --alias="https://prod-setup.netlify.app"
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_STAGING_SITE_ID }}
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    if: github.ref_name == 'main'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Deploy to Production
+      uses: nwtgck/actions-netlify@v3.0
+      with:
+        args: deploy --prod --dir=. --alias="https://prod-setup.netlify.app"
       env:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+  deploy-dev:
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'dev'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Deploy to Dev
+      uses: nwtgck/actions-netlify@v3.0
+      with:
+        args: deploy --dev --dir=. --alias="https://prod-setup.netlify.app"
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_DEV_SITE_ID }}
