@@ -21,6 +21,7 @@ jobs:
       with:
         args: deploy --development --dir=. 
       env:
+        name: development
         url: 'dev-example-url.netlify.app'
         DEV_ENV: ${{ secrets.DEV_ENV }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
