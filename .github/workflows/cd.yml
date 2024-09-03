@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - staging
-      - dev  
+      - develop  
 
 jobs:
   deploy-staging:
@@ -52,7 +52,7 @@ jobs:
     - name: Deploy to Dev
       uses: nwtgck/actions-netlify@v3.0
       with:
-        args: deploy --develop --dir=. --alias="dev-example-url.netlify.app"
+        args: deploy --development --dir=. --alias="dev-example-url.netlify.app"
       env:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_DEV_SITE_ID }}
