@@ -8,6 +8,23 @@ on:
       - develop  
 
 jobs:
+  deploy-dev:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Deploy to Dev
+      uses: nwtgck/actions-netlify@v3.0
+      with:
+        args: deploy --development --dir=. --alias="dev-example-url.netlify.app"
+      env:
+        development: ${{ env.development }}
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_DEV_SITE_ID }}
+
   deploy-staging:
     runs-on: ubuntu-latest
     env:
@@ -44,19 +61,4 @@ jobs:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
-  deploy-dev:
-    runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/main' }}
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Deploy to Dev
-      uses: nwtgck/actions-netlify@v3.0
-      with:
-        args: deploy --development --dir=. --alias="dev-example-url.netlify.app"
-      env:
-        development: ${{ env.development }}
-        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_DEV_SITE_ID }}
+  
