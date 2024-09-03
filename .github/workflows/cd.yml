@@ -21,14 +21,14 @@ jobs:
       with:
         args: deploy --development --dir=. --alias="dev-example-url.netlify.app"
       env:
-        development: ${{ env.development }}
+        development: ${{ env.DEV_ENV }}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_DEV_SITE_ID }}
 
   deploy-staging:
     runs-on: ubuntu-latest
     env:
-      staging: ${{ secrets.staging }}
+      staging: ${{ secrets.STAGING_ENV }}
     if: ${{ github.ref == 'refs/heads/main' }}
 
     steps:
@@ -57,7 +57,7 @@ jobs:
       with:
         args: deploy --prod --dir=. --alias="https://prod-setup.netlify.app"
       env:
-        prod: production
+        prod: ${{ secrets.PROD_ENV}}
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
 
