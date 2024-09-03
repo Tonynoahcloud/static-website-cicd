@@ -46,7 +46,7 @@ jobs:
   deploy-production:
     runs-on: ubuntu-latest
     env:
-      production
+      name: production
       url: https://prod-setup.netlify.app/
     if: github.event.ref == 'refs/heads/main'
 
