@@ -16,9 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       name: development
-      url: 'dev-example-url.netlify.app'
-      DEV_ENV: ${{ secrets.DEV_ENV }}
-
     if:  github.event.ref == 'refs/heads/main'
     needs: [build]
     steps:
@@ -34,11 +31,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       name: staging
-      STAGING_ENV: ${{ secrets.STAGING_ENV}}
-      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_STAGING_SITE_ID }}
-      url: 'https://prod-setup.netlify.app'
-
     if:  github.event.ref == 'refs/heads/main'
     needs: [deploy-dev]
 
@@ -53,7 +45,9 @@ jobs:
       
   deploy-production:
     runs-on: ubuntu-latest
-    needs: deploy-staging
+    env:
+      name: prod
+      url: https://prod-setup.netlify.app
     if: github.event.ref == 'refs/heads/main'
 
     steps:
@@ -64,7 +58,5 @@ jobs:
       uses: nwtgck/actions-netlify@v3.0
       with:
         args: deploy --prod --dir=.
-      env:
-        name: prod
-        url: https://prod-setup.netlify.app
+      
   
