@@ -43,7 +43,7 @@ jobs:
       env:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_STAGING_SITE_ID }}
-        url: https://prod-setup.netlify.app
+        url: "https://prod-setup.netlify.app"
 
   deploy-production:
     runs-on: ubuntu-latest
