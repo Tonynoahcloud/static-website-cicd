@@ -33,8 +33,6 @@ jobs:
     environment:
       name: staging
     env:
-      
-      STAGING_ENV: $ {{ secrets.STAGING_ENV }}
       url: echo 'https://staging-env.netlify.app'
       NETLIFY_STAGING_SITE_ID: $ {{ secrets.NETLIFY_STAGING_SITE_ID }}
       
