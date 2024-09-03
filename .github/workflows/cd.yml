@@ -1,43 +1,43 @@
-name: Deploy to Netlify
+name: Netlify Deployment
 
 on:
   push:
     branches:
-      - main 
+      - main # this line shows that the pipeline would only be triggered if we push to the main branch
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest # our job would be running on ubuntu os
     env:
-      name: production
+      NETLIFY_AUTH_TOKEN: $ {{ secrets.NETLIFY_AUTH_TOKEN }} # this token is from the netlify user account
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4 # the workflow needs to checkout the current repository
   deploy-dev:
     runs-on: ubuntu-latest
     env:
-      name: production
-    if:  github.event.ref == 'refs/heads/main'
-    needs: [build]
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      name: development # we expect this job to run in the dev environment
+      url:              # this url is gotten from netlify and it is specifically for the dev environment
+      NETLIFY_DEV_SITE_ID:        # this is the site id for the dev url
 
-    - name: Deploy to Dev
+    if:  github.event.ref == 'refs/heads/dev' # we want this job to be triggered once we push to the dev branch
+    needs: [build]            # this job would only run if the build job is successful
+    steps:
+    - name: Deploy to Dev     
       uses: nwtgck/actions-netlify@v3.0
       with:
-        args: deploy --development --dir=. 
+        args: deploy --development --dir=.    # this line of code is to deploy our website files using the development env and the dir where the files are is root directory
       
   deploy-staging:
     runs-on: ubuntu-latest
     env:
       name: staging
-    if:  github.event.ref == 'refs/heads/main'
-    needs: [deploy-dev]
+      url: 
+      NETLIFY_STAGING_SITE_ID:
+      
+    if:  github.event.ref == 'refs/heads/staging'       #we are assuming we have a staging branch, so this job would be triggered is we push code to the staging branch
+    needs: [deploy-dev]                                 #the development must run for the staging to run
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
     - name: Deploy to Staging
       uses: nwtgck/actions-netlify@v3.0
       with:
@@ -47,13 +47,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       name: production
-      url: https://prod-setup.netlify.app/
-    if: github.event.ref == 'refs/heads/main'
-
+      url:
+      NETLIFY_PROD_SITE_ID:
+    if: github.event.ref == 'refs/heads/main'       # production deployment would be triggered when we push to the main branch
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
     - name: Deploy to Production
       uses: nwtgck/actions-netlify@v3.0
       with:
