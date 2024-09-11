@@ -15,9 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: development
+      url:   https://muna-dev.netlify.app 
     env:
        # we expect this job to run in the dev environment
-      url:   https://muna-dev.netlify.app           # this url is gotten from netlify and it is specifically for the dev environment
+                # this url is gotten from netlify and it is specifically for the dev environment
       NNETLIFY_DEVELOP_SITE_ID:   $ {{ secrets.NETLIFY_DEVELOP_SITE_ID }}     # this is the site id for the dev url
 
     if:  github.event.ref == 'refs/heads/develop' # we want this job to be triggered once we push to the dev branch
